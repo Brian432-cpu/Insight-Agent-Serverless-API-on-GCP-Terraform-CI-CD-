@@ -43,11 +43,12 @@ jobs:
         run: |
           gcloud auth configure-docker ${LOCATION}-docker.pkg.dev --quiet
 
-      - name: Build Docker image
-        run: |
-          IMAGE="${{ secrets.GCP_PROJECT_ID }}-${{ env.LOCATION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/$ARTIFACT_REPO/insight-agent:${{ github.sha }}"
-          docker build -t $IMAGE ./app
-          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+     - name: Build Docker image
+  run: |
+    IMAGE="${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.ARTIFACT_REPO }}/insight-agent:${{ github.sha }}"
+    docker build -t $IMAGE ./app
+    echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+
 
       - name: Push Docker image to Artifact Registry
         run: |
